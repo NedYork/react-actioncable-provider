@@ -8,7 +8,7 @@ var React = require('react')
 var actioncable = require('actioncable')
 var createReactClass = require('create-react-class');
 
-var ActionCableProvider = React.createReactClass({
+var ActionCableProvider = createReactClass({
   getChildContext: function () {
     return {
       cable: this.cable
@@ -60,7 +60,7 @@ ActionCableProvider.childContextTypes = {
   cable: React.PropTypes.object.isRequired
 }
 
-var ActionCable = React.createReactClass({
+var ActionCable = createReactClass({
   componentDidMount: function () {
     var self = this;
     var _props = this.props,
