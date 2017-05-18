@@ -6,8 +6,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var React = require('react')
 var actioncable = require('actioncable')
+var createReactClass = require('create-react-class');
 
-var ActionCableProvider = React.createClass({
+var ActionCableProvider = React.createReactClass({
   getChildContext: function () {
     return {
       cable: this.cable
@@ -59,7 +60,7 @@ ActionCableProvider.childContextTypes = {
   cable: React.PropTypes.object.isRequired
 }
 
-var ActionCable = React.createClass({
+var ActionCable = React.createReactClass({
   componentDidMount: function () {
     var self = this;
     var _props = this.props,
