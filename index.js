@@ -1,36 +1,41 @@
 "use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+// Object.defineProperty(exports, "__esModule", {
+//   value: true
+// });
 
 var React = require('react')
 var actioncable = require('actioncable')
 var createReactClass = require('create-react-class');
 var PropTypes = require('prop-types');
 
-var ActionCableProvider = createReactClass({
-  getChildContext: function () {
+export class ActionCableProvider extends React.Component {
+  constructor(props, context) {
+    super(props, context)
+    // this.displayName = 'ActionCableProvider'
+  }
+
+  getChildContext() {
     return {
       cable: this.cable
     }
-  },
+  }
 
-  componentWillMount: function () {
+  componentWillMount() {
     if (this.props.cable) {
       this.cable = this.props.cable
     } else {
       this.cable = actioncable.createConsumer(this.props.url)
     }
-  },
+  }
 
-  componentWillUnmount: function () {
+  componentWillUnmount() {
     if (!this.props.cable && this.cable) {
       this.cable.disconnect()
     }
-  },
+  }
 
-  componentWillReceiveProps: function (nextProps) {
+  componentWillReceiveProps(nextProps) {
     // Props not changed
     if (this.props.cable === nextProps.cable &&
         this.props.url === nextProps.url) {
@@ -42,14 +47,12 @@ var ActionCableProvider = createReactClass({
 
     // create or assign cable
     this.componentWillMount()
-  },
+  }
 
-  render: function () {
+  render() {
     return this.props.children
   }
-})
-
-ActionCableProvider.displayName = 'ActionCableProvider'
+}
 
 ActionCableProvider.propTypes = {
   cable: PropTypes.object,
@@ -61,8 +64,10 @@ ActionCableProvider.childContextTypes = {
   cable: PropTypes.object.isRequired
 }
 
-var ActionCable = createReactClass({
-  componentDidMount: function () {
+ActionCableProvider.displayName = 'ActionCableProvider'
+
+export class ActionCable extends React.Component {
+  componentDidMount() {
     var self = this;
     var _props = this.props,
         onReceived = _props.onReceived,
@@ -70,7 +75,6 @@ var ActionCable = createReactClass({
         onConnected = _props.onConnected,
         onDisconnected = _props.onDisconnected,
         onRejected = _props.onRejected;
-
     this.cable = this.context.cable.subscriptions.create(
       this.props.channel,
       {
@@ -91,35 +95,35 @@ var ActionCable = createReactClass({
         }
       }
     )
-  },
+  }
 
-  componentWillUnmount: function () {
+  componentWillUnmount() {
     if (this.cable) {
       this.context.cable.subscriptions.remove(this.cable)
       this.cable = null
     }
-  },
+  }
 
-  send: function (data) {
+  send(data) {
     if (!this.cable) {
       throw new Error('ActionCable component unloaded')
     }
 
     this.cable.send(data)
-  },
+  }
 
-  perform: function (action, data) {
+  perform(action, data) {
     if (!this.cable) {
       throw new Error('ActionCable component unloaded')
     }
 
     this.cable.perform(action, data)
-  },
-
-  render: function () {
-    return null
   }
-})
+
+  render() {
+    return null;
+  }
+}
 
 ActionCable.displayName = 'ActionCable'
 
@@ -134,6 +138,6 @@ ActionCable.contextTypes = {
   cable: PropTypes.object.isRequired
 }
 
-exports.ActionCable = ActionCableProvider.ActionCable = ActionCable
+// exports.ActionCable = ActionCableProvider.ActionCable = ActionCable
 
-exports.default = module.exports = ActionCableProvider
+// exports.default = module.exports = ActionCableProvider
