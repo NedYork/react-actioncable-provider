@@ -67,6 +67,10 @@ ActionCableProvider.childContextTypes = {
 ActionCableProvider.displayName = 'ActionCableProvider'
 
 export class ActionCable extends React.Component {
+  constructor(props, context) {
+    super(props, context)
+  }
+  
   componentDidMount() {
     var self = this;
     var _props = this.props,
@@ -121,7 +125,7 @@ export class ActionCable extends React.Component {
   }
 
   render() {
-    return null;
+    return null
   }
 }
 
@@ -137,7 +141,3 @@ ActionCable.propTypes = {
 ActionCable.contextTypes = {
   cable: PropTypes.object.isRequired
 }
-
-// exports.ActionCable = ActionCableProvider.ActionCable = ActionCable
-
-// exports.default = module.exports = ActionCableProvider
